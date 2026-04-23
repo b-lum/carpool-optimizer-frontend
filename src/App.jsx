@@ -645,6 +645,8 @@ function GuideCard({ step, title, children }) {
     </div>
   )
 }
+
+function TopSection({ title, children }) {
   return (
     <div style={{
       padding: '12px 16px',
