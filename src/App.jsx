@@ -24,7 +24,7 @@ export default function App() {
   // absent: Set of emails — people marked as not attending
   const [absentEmails, setAbsentEmails] = useState(new Set())
   const [usePublicOSRM, setUsePublicOSRM] = useState(false)
-  const [mode, setMode] = useState('pickup') // 'pickup' | 'dropoff'
+  const [guideOpen, setGuideOpen] = useState(true)
 
   // ── Resizable panels ───────────────────────────────────────────────────────
   const [leftWidth, setLeftWidth] = useState(200)
@@ -515,7 +515,92 @@ export default function App() {
         </div>
       </div>
 
-      {/* Right resize handle */}
+      {/* ── Guide panel ─────────────────────────────────────────────────── */}
+      <div style={{
+        position: 'fixed',
+        bottom: 0,
+        left: leftWidth + 5,
+        right: rightWidth + 5,
+        zIndex: 50,
+        background: '#fff',
+        borderTop: '1px solid #e5e7eb',
+        boxShadow: '0 -2px 8px rgba(0,0,0,0.06)',
+      }}>
+        {/* Header bar — always visible */}
+        <div
+          onClick={() => setGuideOpen(o => !o)}
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            padding: '8px 16px', cursor: 'pointer',
+            userSelect: 'none',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '12px', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+              Quick Start Guide
+            </span>
+            <span style={{ fontSize: '11px', color: '#9ca3af' }}>— click to {guideOpen ? 'hide' : 'show'}</span>
+          </div>
+          <span style={{ fontSize: '14px', color: '#9ca3af' }}>{guideOpen ? '▾' : '▸'}</span>
+        </div>
+
+        {/* Collapsible body */}
+        {guideOpen && (
+          <div style={{
+            padding: '0 16px 14px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+            gap: '12px',
+            maxHeight: '260px',
+            overflowY: 'auto',
+          }}>
+
+            <GuideCard step="1" title="Load the roster">
+              Paste this CSV URL into the <b>Import Roster</b> box and hit <b>Load Roster</b>:
+              <br /><br />
+              <a
+                href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSdavfZ5IiPmAllMG7Bh-o5mb6R1R4QOTcgK1MjXWKv1LrSRUkC4BI69crE75hn8IM951GmgyyvpZ_d/pub?gid=1908568281&single=true&output=csv"
+                target="_blank"
+                rel="noreferrer"
+                style={{ fontSize: '11px', color: '#2563eb', wordBreak: 'break-all' }}
+              >
+                Sample roster CSV ↗
+              </a>
+            </GuideCard>
+
+            <GuideCard step="2" title="Set the destination">
+              Enter a label and coordinates in the <b>Destination</b> box. For example:
+              <br /><br />
+              <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#374151' }}>
+                Mission Bay Youth Aquatic Center<br />
+                Lat: 32.77774402<br />
+                Lon: -117.2161813
+              </span>
+            </GuideCard>
+
+            <GuideCard step="3" title="Add cars">
+              In <b>Build Cars</b>, search for a driver by name and set their seat capacity, then click to add. Repeat for each driver. You can remove a car with the × button.
+            </GuideCard>
+
+            <GuideCard step="4" title="Fill &amp; optimize">
+              Hit <b>Fill &amp; Optimize Routes</b> to auto-assign everyone to cars and calculate routes. Toggle <b>Public OSRM</b> in the ⚙ settings (left panel) if you don't have a local server running.
+            </GuideCard>
+
+            <GuideCard step="5" title="Drag, drop &amp; click">
+              Manually move people by <b>dragging</b> them between the left pool, car seats, and the sidelined zone. Or <b>click</b> a person to select them (green highlight), then click a destination seat to move them. Click the same seat again to deselect.
+            </GuideCard>
+
+            <GuideCard step="6" title="Mark absent">
+              Hit the <b>− button</b> next to any name in the left panel to grey them out and exclude them from optimization. Use <b>Grey all / Restore all</b> to toggle everyone at once. Absent people stay visible but won't be assigned.
+            </GuideCard>
+
+            <GuideCard step="7" title="Sidelined zone">
+              Drag anyone into the <b>Sidelined</b> area (bottom of the car grid) to exclude them from auto-assign without marking them absent. Drag or click them back out to restore.
+            </GuideCard>
+
+          </div>
+        )}
+      </div>
       <div
         onMouseDown={startResize('right')}
         style={{
@@ -538,7 +623,28 @@ export default function App() {
   )
 }
 
-function TopSection({ title, children }) {
+function GuideCard({ step, title, children }) {
+  return (
+    <div style={{
+      background: '#f9fafb',
+      border: '1px solid #e5e7eb',
+      borderRadius: '8px',
+      padding: '10px 12px',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+        <div style={{
+          width: '18px', height: '18px', borderRadius: '50%',
+          background: '#2563eb', color: '#fff',
+          fontSize: '10px', fontWeight: 700,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0,
+        }}>{step}</div>
+        <span style={{ fontSize: '12px', fontWeight: 700, color: '#374151' }}>{title}</span>
+      </div>
+      <div style={{ fontSize: '12px', color: '#6b7280', lineHeight: 1.5 }}>{children}</div>
+    </div>
+  )
+}
   return (
     <div style={{
       padding: '12px 16px',
