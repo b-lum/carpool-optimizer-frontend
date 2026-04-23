@@ -23,8 +23,10 @@ export default function App() {
   const [sidelined, setSidelined] = useState(new Set())
   // absent: Set of emails — people marked as not attending
   const [absentEmails, setAbsentEmails] = useState(new Set())
-  const [usePublicOSRM, setUsePublicOSRM] = useState(false)
+  const [usePublicOSRM, setUsePublicOSRM] = useState(True)
   const [guideOpen, setGuideOpen] = useState(true)
+  const [mode, setMode] = useState('pickup') // 'pickup' | 'dropoff'
+
 
   // ── Resizable panels ───────────────────────────────────────────────────────
   const [leftWidth, setLeftWidth] = useState(200)
