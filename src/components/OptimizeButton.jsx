@@ -12,7 +12,7 @@ async function fetchPublicRoute(origin, destination, waypoints) {
   const coords = [origin, ...waypoints, destination]
     .map(p => `${p.lon},${p.lat}`)
     .join(';')
-  const url = `https://router.project-osrm.org/route/v1/driving/${coords}?overview=full&geometries=geojson`
+  const url = `https://routing.openstreetmap.de/routed-car/route/v1/driving/${coords}?overview=full&geometries=geojson`
   const { data } = await axios.get(url)
   if (data.code !== 'Ok') throw new Error('OSRM error: ' + data.code)
   const leg = data.routes[0]
