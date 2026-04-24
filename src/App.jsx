@@ -23,7 +23,7 @@ export default function App() {
   const [sidelined, setSidelined] = useState(new Set())
   // absent: Set of emails — people marked as not attending
   const [absentEmails, setAbsentEmails] = useState(new Set())
-  const [usePublicOSRM, setUsePublicOSRM] = useState(True)
+  const [usePublicOSRM, setUsePublicOSRM] = useState(true)
   const [guideOpen, setGuideOpen] = useState(true)
   const [mode, setMode] = useState('pickup') // 'pickup' | 'dropoff'
 
