@@ -160,6 +160,7 @@ export default function PeoplePool({
             outline: 'none',
             background: '#fff',
             marginBottom: '6px',
+            color: '#2e2e2e'
           }}
         />
 
